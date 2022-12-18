@@ -1,3 +1,4 @@
+import { HttpService } from './utils/http.services';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -17,6 +18,8 @@ import { PublicLayoutComponent } from './views/layouts/public.layout/public.layo
 import { SecuredLayoutComponent } from './views/layouts/secured.layout/secured.layout.component';
 import { AuthService } from './services/auth.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -37,10 +40,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    HttpClientModule,
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })
