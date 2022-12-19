@@ -1,1 +1,4 @@
-<p>home works!</p>
+<h3>Welcome back {{ userObj["user"]["firstName"] }} {{ userObj["user"]["lastName"] }}</h3>
+<h6>{{ userObj["user"]["email"] }}</h6>
+<br>
+<button class="btn btn-primary" (click)="logout()">logout</button>

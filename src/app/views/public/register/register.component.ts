@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    protected router:Router
+  ) { }
+
+
+  public pageNavigator(url:String) {
+    this.router.navigate(['/'+url]);
+  }
 
   ngOnInit(): void {
   }

@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { UserDataService } from './../../../services/userdata.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public _subscription_user_data:any;
+  public userObj:any;
 
-  ngOnInit(): void {
+  constructor(
+      private router: Router,
+      private _userDataService: UserDataService,
+    ) {
   }
 
+  logout(){
+    localStorage.removeItem("userObj");
+    this.router.navigate(["/login"])
+  }
+
+  ngOnDestroy() {
+    this._subscription_user_data.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this._subscription_user_data = this._userDataService.userDataChange$.subscribe(value => {
+      this.userObj= value;
+    });
+  }
 }

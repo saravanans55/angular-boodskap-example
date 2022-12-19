@@ -1,3 +1,4 @@
+import { UserDataService } from './services/userdata.service';
 import { HttpService } from './utils/http.services';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -5,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './views/public/login/login.component';
+import { DomainsComponent } from './views/public/domains/domains.component';
 import { RegisterComponent } from './views/public/register/register.component';
 import { HomeComponent } from './views/secured/home/home.component';
 import { ProfileComponent } from './views/secured/profile/profile.component';
@@ -35,7 +37,8 @@ import { HttpClientModule } from '@angular/common/http';
     HelpComponent,
     SupportComponent,
     PublicLayoutComponent,
-    SecuredLayoutComponent
+    SecuredLayoutComponent,
+    DomainsComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     AuthService,
-    HttpService
+    HttpService,
+    UserDataService
   ],
   bootstrap: [AppComponent]
 })

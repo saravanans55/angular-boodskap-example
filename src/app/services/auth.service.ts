@@ -1,19 +1,24 @@
+import { DomainModel } from 'src/app/models/DomainModel';
+import { Observable } from 'rxjs';
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree, Router } from "@angular/router";
 
 @Injectable()
 export class AuthService implements CanActivate {
 
-    constructor(protected router: Router) {}
+    constructor(private router: Router) {}
 
-     canActivate() {
-        console.log("Check auth---------->",localStorage.getItem('access_token'));
-        if (localStorage.getItem('access_token')) {
+     canActivate(
+        route : ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+     ) {
+        if (localStorage.getItem('userObj') != null) {
             // logged in so return true
             return true;
         }
-        // not logged in so redirect to login page
-        this.router.navigate(['/login']);
+
+        // not logged in so redirect to login page with the return url
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
         return false;
     }
 }

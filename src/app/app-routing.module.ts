@@ -7,18 +7,22 @@ import { SECURE_ROUTES } from './views/layouts/secured.layout/secured.routes';
 import { PUBLIC_ROUTES } from './views/layouts/public.layout/public.routes';
 
 const APP_ROUTES: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { 
+    path: '', 
+    redirectTo: 'home', 
+    pathMatch: 'full' 
+  },
   {
     path: '',
     component: PublicLayoutComponent,
-    data: { title: 'Public Views' },
+    data: { title: 'Public Views', requiresLogin : false },
     children: PUBLIC_ROUTES,
   },
   {
     path: '',
     component: SecuredLayoutComponent,
     canActivate: [AuthService],
-    data: { title: 'Secure Views' },
+    data: { title: 'Secure Views', requiresLogin : true },
     children: SECURE_ROUTES,
   },
   // otherwise redirect to home
