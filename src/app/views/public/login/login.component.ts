@@ -1,12 +1,9 @@
+import { UserDataService } from './../../../services/userdata.service';
+import { DomainModel } from 'src/app/models/DomainModel';
 import { HttpService } from './../../../utils/http.services';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-
-interface LoginData {
-  email: String;
-  password: String;
-}
 
 @Component({
   selector: 'app-login',
@@ -18,7 +15,11 @@ export class LoginComponent implements OnInit {
  
   public submitted = false;
 
-  constructor(protected router: Router, protected httpService: HttpService) {}
+  constructor(
+    protected router: Router, 
+    protected httpService: HttpService,
+    private _userDataService: UserDataService
+    ) {}
 
   public loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -37,15 +38,47 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.httpService.postCall('/domain/login', this.loginForm.value).subscribe(
-      {
-        next: (v) => {
-          console.log("next-----------");
-          console.log(v);
+    this.httpService.postCall(`/domain/login`, this.loginForm.value).subscribe({
+        next: (res) => {
+          if(res){
+              if(res.partDomains.length === 1){
+
+                this._userDataService.userDataChange(res);
+                this.router.navigate(["/home"]);
+
+              }else if(res.partDomains.length > 1){
+                localStorage.setItem("sessionObj",JSON.stringify(res));
+                this.router.navigate(["/domains"]);
+              }else{
+                console.log("Domain not found!");
+              }
+          }
         },
-        error: (e) => {
-          console.log("error-----------");
-          console.error(e);
+        error: (err) => {
+          console.error(err);
+        },
+        complete: () => {
+          console.log("Completed!!!");
+        }
+      });
+  }
+
+  public switchDomain(domainObj:DomainModel){
+    this.httpService.postCall(
+      `/domain/login/switch/${domainObj["token"]}/${domainObj["domainKey"]}`,
+      this.loginForm.value).subscribe(
+      {
+        next: (res) => {
+          if(res != null){
+            localStorage.setItem("userObj",JSON.stringify(res));
+            this._userDataService.userDataChange(res);
+            this.router.navigate(["/home"]);
+          }else{
+            console.error(res);
+          }
+        },
+        error: (err) => {
+          console.error(err);
         },
         complete: () => {
           console.log("Completed!!!");
@@ -54,9 +87,13 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  public pageNavigator() {
-    this.router.navigate(['/signup']);
+  public pageNavigator(url:String) {
+    this.router.navigate(['/'+url]);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(localStorage.getItem("sessionObj") != null){
+        this.router.navigate(["/domains"]);
+    };
+  }
 }
