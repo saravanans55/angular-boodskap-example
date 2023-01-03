@@ -47,8 +47,10 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(["/home"]);
 
               }else if(res.partDomains.length > 1){
+
                 localStorage.setItem("sessionObj",JSON.stringify(res));
                 this.router.navigate(["/domains"]);
+
               }else{
                 console.log("Domain not found!");
               }
@@ -70,7 +72,7 @@ export class LoginComponent implements OnInit {
       {
         next: (res) => {
           if(res != null){
-            localStorage.setItem("userObj",JSON.stringify(res));
+            // localStorage.setItem("userObj",JSON.stringify(res));
             this._userDataService.userDataChange(res);
             this.router.navigate(["/home"]);
           }else{
