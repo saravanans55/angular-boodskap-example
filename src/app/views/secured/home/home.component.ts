@@ -18,10 +18,6 @@ export class HomeComponent implements OnInit {
     ) {
   }
 
-  logout(){
-    localStorage.removeItem("userObj");
-    this.router.navigate(["/login"])
-  }
 
   ngOnDestroy() {
     this._subscription_user_data.unsubscribe();
